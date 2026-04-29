@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE PE — Principles of Training Flash Cards</title>
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #0D1B2A;
+    --teal:   #0077B6;
+    --gold:   #F9A825;
+    --charcoal: #212121;
+    --white:  #FFFFFF;
+    --green:  #1B5E20;
+    --purple: #4A148C;
+    --light-teal: #E0F4FF;
+    --light-gold: #FFF9E6;
+    --light-green: #E8F5E9;
+    --mid-grey: #F5F5F5;
+    --border: #DDDDDD;
+  }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #F0F4F8;
+    min-height: 100vh;
+    color: var(--charcoal);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    padding: 18px 24px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .header-left .subtitle { color: var(--gold); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .header-left h1 { color: var(--white); font-size: 22px; font-weight: 700; line-height: 1.2; }
+  .header-left .spec { color: #90CAF9; font-size: 13px; margin-top: 2px; }
+  .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .progress-badge {
+    background: rgba(255,255,255,0.12);
+    color: var(--white);
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
+  .filter-btn {
+    background: var(--mid-grey);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--charcoal);
+  }
+  .filter-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .filter-btn.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+  /* ── MAIN LAYOUT ── */
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 40px; }
+
+  /* ── CARD COUNTER ── */
+  .card-counter {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .card-counter span { color: var(--teal); font-weight: 700; font-size: 15px; }
+
+  /* ── FLASH CARD ── */
+  .card-scene {
+    perspective: 1200px;
+    width: 100%;
+    min-height: 340px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    min-height: 340px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-scene.flipped .card-inner { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    min-height: 340px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  }
+  .card-front { background: var(--white); }
+  .card-back  { background: var(--white); transform: rotateY(180deg); }
+
+  /* Front face */
+  .card-topic-bar {
+    padding: 8px 22px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .card-front-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 40px;
+    min-height: 280px;
+    text-align: center;
+  }
+  .card-number {
+    font-size: 11px;
+    color: #AAA;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .card-term {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .flip-hint {
+    font-size: 12px;
+    color: #BBB;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .flip-hint svg { opacity: 0.5; }
+
+  /* Back face */
+  .card-back-body { padding: 22px 28px 20px; }
+  .card-back-topic { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .card-back-term { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 14px; line-height: 1.2; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .definition-box {
+    background: var(--light-teal);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+  .tip-box {
+    background: var(--light-gold);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--charcoal);
+  }
+  .tip-box .tip-label { font-weight: 700; color: #B07800; }
+  .example-box {
+    background: #FAFAFA;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #555;
+  }
+  .example-box .eg-label { font-weight: 700; color: var(--teal); }
+
+  /* ── NAV BUTTONS ── */
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--charcoal);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+  .nav-btn.primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
+  .nav-btn.primary:hover { background: #005F8E; border-color: #005F8E; }
+  .nav-btn.shuffle-btn { border-color: var(--gold); color: var(--gold); }
+  .nav-btn.shuffle-btn:hover { background: var(--gold); color: var(--white); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 4px;
+    height: 6px;
+    margin: 14px 0 0;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--teal);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+
+  /* ── SEEN / KNOWN TRACKER ── */
+  .tracker-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .tracker-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tracker-btn.know { background: var(--light-green); color: var(--green); border: 2px solid #A5D6A7; }
+  .tracker-btn.know:hover, .tracker-btn.know.marked { background: var(--green); color: var(--white); }
+  .tracker-btn.review { background: #FFF3E0; color: #E65100; border: 2px solid #FFCC80; }
+  .tracker-btn.review:hover, .tracker-btn.review.marked { background: #E65100; color: var(--white); }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .stat-chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .stat-chip .dot.green { background: var(--green); }
+  .stat-chip .dot.orange { background: #E65100; }
+  .stat-chip .dot.grey { background: #BBB; }
+
+  /* ── TOPIC COLOUR MAP ── */
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="subtitle">GCSE PE — Edexcel 1PE0</div>
+    <h1>Principles of Training</h1>
+    <div class="spec">Spec 3.3 &nbsp;|&nbsp; Flash Cards</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-badge" id="progressBadge">Card 1 of 22</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Topic:</span>
+  <button class="filter-btn active" onclick="filterCards('all', this)">All (22)</button>
+  <button class="filter-btn" onclick="filterCards('Principles of Training', this)">Principles (8)</button>
+  <button class="filter-btn" onclick="filterCards('FITT Principle', this)">FITT (4)</button>
+  <button class="filter-btn" onclick="filterCards('Training Thresholds', this)">Thresholds (4)</button>
+  <button class="filter-btn" onclick="filterCards('Consequences of Getting It Wrong', this)">Overtraining/Reversibility (2)</button>
+  <button class="filter-btn" onclick="filterCards('Training Methods', this)">Training Methods (8)</button>
+</div>
+
+<main>
+  <div class="card-counter">
+    Card <span id="cardNum">1</span> of <span id="cardTotal">22</span>
+  </div>
+
+  <div class="card-scene" id="cardScene" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <!-- Front -->
+      <div class="card-face card-front">
+        <div class="card-topic-bar" id="topicBar">Principles of Training</div>
+        <div class="card-front-body">
+          <div class="card-number" id="cardNumFront">Card 1 / 22</div>
+          <div class="card-term" id="cardTerm">Individual Needs / Differences</div>
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+            Tap to reveal answer
+          </div>
+        </div>
+      </div>
+      <!-- Back -->
+      <div class="card-face card-back">
+        <div class="card-back-body">
+          <div class="card-back-topic" id="backTopic" style="color: #0077B6;">Principles of Training</div>
+          <div class="card-back-term" id="backTerm">Individual Needs / Differences</div>
+          <div class="section-label" style="color: #0077B6;">Definition</div>
+          <div class="definition-box" id="defBox">Training must be tailored to the specific requirements of each individual.</div>
+          <div class="section-label" style="color: #B07800; margin-top:8px;">⭐ Exam Tip</div>
+          <div class="tip-box" id="tipBox"><span class="tip-label"></span><span id="tipText">Don't confuse with specificity.</span></div>
+          <div class="example-box" id="egBox"><span class="eg-label">Example: </span><span id="egText"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill" style="width:4.5%"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-row" style="margin-top:16px;">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
+    <button class="nav-btn primary" onclick="flipCard()">Flip Card</button>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+    <button class="nav-btn shuffle-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+  </div>
+
+  <!-- Know / Review tracker -->
+  <div class="tracker-row">
+    <button class="tracker-btn know" id="knowBtn" onclick="markCard('know')">✓ Got it!</button>
+    <button class="tracker-btn review" id="reviewBtn" onclick="markCard('review')">↩ Need to review</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-chip"><span class="dot green"></span><span id="knownCount">0</span> known</div>
+    <div class="stat-chip"><span class="dot orange"></span><span id="reviewCount">0</span> to review</div>
+    <div class="stat-chip"><span class="dot grey"></span><span id="unseenCount">22</span> unseen</div>
+  </div>
+</main>
+
+<script>
+const CARDS = [
+  { id:1, topic:"Principles of Training", term:"Individual Needs / Differences", definition:"Training must be tailored to the specific requirements of each individual — their current fitness level, age, sport, strengths and weaknesses.", examTip:"Don't confuse with specificity. Individual needs = who the person IS. Specificity = what their SPORT demands.", example:"A 40-year-old recreational runner and a 17-year-old county athlete follow different programmes despite both running." },
+  { id:2, topic:"Principles of Training", term:"Specificity", definition:"Training must be specific to the muscles used, energy systems required and movement patterns of the performer's sport or activity.", examTip:"Key phrase: 'match the demands of the sport'. Sprinters train fast-twitch muscles; marathon runners train aerobic system.", example:"A swimmer focuses on upper body resistance work and aerobic capacity — not leg press and anaerobic sprints." },
+  { id:3, topic:"Principles of Training", term:"Progressive Overload", definition:"The demands placed on the body must be gradually and systematically increased over time to continue producing physical adaptations.", examTip:"Use FITT to show HOW to apply progressive overload: increase Frequency, Intensity, Time or change Type.", example:"A 5km runner increases their weekly mileage by 10% each week to keep improving cardiovascular endurance." },
+  { id:4, topic:"FITT Principle", term:"FITT — Frequency", definition:"How often an athlete trains — the number of sessions per week. Increasing frequency is one way to apply progressive overload.", examTip:"Frequency links directly to progressive overload. You must allow rest between sessions or risk overtraining.", example:"Increasing from 3 to 5 training sessions per week across a 6-week training block." },
+  { id:5, topic:"FITT Principle", term:"FITT — Intensity", definition:"How hard training is. Can be measured by % of maximum heart rate, % of 1 rep max, RPE (rate of perceived exertion), or pace.", examTip:"Intensity is most commonly assessed using heart rate. Link to training thresholds and Karvonen formula.", example:"Running at 75% MHR rather than 60% MHR to increase cardiovascular training intensity." },
+  { id:6, topic:"FITT Principle", term:"FITT — Time", definition:"The duration of each training session. Increasing session length is another way to apply progressive overload.", examTip:"Time is separate from frequency. More sessions = frequency. Longer sessions = time.", example:"Extending a long Sunday run from 60 minutes to 90 minutes over 4 weeks." },
+  { id:7, topic:"FITT Principle", term:"FITT — Type", definition:"The method or mode of training used. Must be specific to the sport (specificity principle). Changing type can vary training stimulus.", examTip:"Type must match sport demands. A cyclist switching from spinning to fartlek cycling still uses sport-specific type.", example:"A netball player using interval training to replicate the stop-start demands of match play." },
+  { id:8, topic:"Principles of Training", term:"Rest and Recovery", definition:"Planned periods of reduced or no training to allow the body to repair, adapt and grow stronger. Adaptations happen during rest — not during training.", examTip:"Without rest, muscles cannot repair micro-tears. Glycogen stores cannot replenish. Leads to overtraining if ignored.", example:"Building in one full rest day per week and a reduced-load 'deload' week every 4 weeks." },
+  { id:9, topic:"Training Thresholds", term:"Aerobic Threshold", definition:"The exercise intensity at which the body begins to supplement aerobic energy production with anaerobic pathways. Below this threshold, exercise is fuelled almost entirely by oxygen.", examTip:"Training below the aerobic threshold improves fat oxidation and base endurance. It is the lower of the two thresholds.", example:"An easy-paced jog where you can hold a full conversation — typically ~60–70% MHR." },
+  { id:10, topic:"Training Thresholds", term:"Anaerobic Threshold (Lactate Threshold)", definition:"The intensity at which lactic acid begins to accumulate faster than it can be removed. Above this threshold, performance rapidly deteriorates.", examTip:"Above the anaerobic threshold, the body cannot clear lactate fast enough. Training near this point improves lactate tolerance.", example:"A 400m runner training at race pace — muscles burning, unable to sustain effort for long periods." },
+  { id:11, topic:"Training Thresholds", term:"Heart Rate Training Zones", definition:"Ranges of heart rate corresponding to different training intensities. Zone 1 (50–60% MHR) = recovery; Zone 2 (60–70%) = aerobic base; Zone 3 (70–80%) = aerobic threshold; Zone 4 (80–90%) = anaerobic threshold; Zone 5 (90–100%) = maximum.", examTip:"Know that different zones target different adaptations. Lower zones improve fat burning; higher zones improve lactate tolerance and speed.", example:"A cyclist using a heart rate monitor to train in Zone 3 (70–80% MHR) to build aerobic endurance." },
+  { id:12, topic:"Training Thresholds", term:"Karvonen Formula", definition:"THR = [(MHR − RHR) × % intensity] + RHR. Uses Heart Rate Reserve (HRR = MHR − RHR) to calculate a personalised target training heart rate.", examTip:"MHR = 220 − age. Always subtract RHR first to get HRR, then multiply by intensity, then add RHR back. Show all steps in the exam.", example:"Age 16, RHR 60: MHR=204. HRR=144. At 70%: (144×0.70)+60 = 160.8 ≈ 161 bpm." },
+  { id:13, topic:"Consequences of Getting It Wrong", term:"Overtraining", definition:"A state of excessive training without adequate rest, resulting in declining performance, persistent fatigue, increased injury risk and psychological burnout.", examTip:"Overtraining is the result of violating rest & recovery. Signs: resting HR increases, performance drops despite more training, frequent illness.", example:"A swimmer doubling their session volume without rest days, leading to persistent shoulder pain and a 3-second drop in 100m time." },
+  { id:14, topic:"Consequences of Getting It Wrong", term:"Reversibility", definition:"When training stops, the body's physiological adaptations are gradually lost. Cardiovascular fitness declines within 2–3 weeks; strength takes longer to reverse.", examTip:"Reversibility is sometimes called 'detraining'. Aerobic adaptations are lost faster than strength adaptations.", example:"A sprinter who stops training for 10 weeks due to injury returns with reduced muscle mass, lower VO₂ max and slower reaction times." },
+  { id:15, topic:"Training Methods", term:"Continuous Training", definition:"Sustained aerobic exercise at a steady, moderate intensity for a prolonged period (typically 20+ minutes) without rest intervals.", examTip:"Best for improving aerobic endurance / cardiovascular fitness. Low intensity = fat burning zone. Used by distance runners, cyclists.", example:"A 45-minute run at 65% MHR — pace and effort remain constant throughout." },
+  { id:16, topic:"Training Methods", term:"Fartlek Training", definition:"A Swedish method ('speed play') combining continuous running with varied bursts of speed. Intensity changes are self-directed rather than structured.", examTip:"Fartlek bridges aerobic and anaerobic training. Good for sports with changing pace (football, hockey). Less structured than interval.", example:"A 40-minute run alternating between easy jogging and 30-second fast efforts up hills." },
+  { id:17, topic:"Training Methods", term:"Circuit Training", definition:"A series of exercises (stations) performed one after another with minimal rest between stations. Can target cardiovascular fitness, strength, or both.", examTip:"Easily adapted for any sport by choosing sport-specific exercises. Good for whole-body fitness and working large groups simultaneously.", example:"10 stations including press-ups, star jumps, squat jumps, sit-ups and shuttle runs — 45 seconds work, 15 seconds rest." },
+  { id:18, topic:"Training Methods", term:"Interval Training", definition:"Alternating periods of high-intensity work with structured rest or low-intensity recovery periods. Work-to-rest ratio is pre-planned.", examTip:"Unlike Fartlek, intervals are precisely timed. Develops both aerobic and anaerobic systems depending on the work-to-rest ratio used.", example:"8 × 400m reps at 90% MHR with 90 seconds recovery jog between each rep." },
+  { id:19, topic:"Training Methods", term:"Plyometric Training", definition:"Explosive exercises involving rapid muscle stretch (eccentric) immediately followed by a powerful contraction (concentric) — the stretch-shortening cycle. Develops explosive power.", examTip:"Plyometrics target fast-twitch muscle fibres. Best for athletes needing explosive power: jumpers, sprinters, basketball players.", example:"Box jumps, depth jumps, bounding — landing and immediately exploding upward without pausing." },
+  { id:20, topic:"Training Methods", term:"Weight / Resistance Training", definition:"Using external resistance (free weights, machines, bodyweight) to overload muscles, causing adaptations including increased muscle size (hypertrophy), strength and power.", examTip:"Low reps / heavy weight = strength. High reps / low weight = muscular endurance. Always link to specificity.", example:"A rugby player performing 4 × 6 squats at 85% 1RM to develop leg strength for scrummaging." },
+  { id:21, topic:"Training Methods", term:"Flexibility Training", definition:"Exercises that improve the range of motion at joints. Includes static stretching, dynamic stretching, PNF (proprioceptive neuromuscular facilitation) and ballistic stretching.", examTip:"Static = hold 20–30s. Dynamic = controlled movement through range. PNF = most effective but requires partner. Ballistic = bouncing (higher injury risk).", example:"A gymnast performing PNF hamstring stretches to improve split flexibility for floor routine." },
+  { id:22, topic:"Training Methods", term:"Cross-Training", definition:"Using a variety of different training methods and sports to improve overall fitness, reduce injury risk, and prevent training monotony.", examTip:"Benefits: reduces overuse injuries, maintains aerobic fitness during injury, psychological variety. Can reduce specificity if overdone.", example:"A marathon runner adding swimming and cycling sessions to maintain fitness while reducing running-related impact stress." },
+];
+
+const TOPIC_COLOURS = {
+  "Principles of Training":            { bg: "#0D1B2A", text: "#FFFFFF" },
+  "FITT Principle":                    { bg: "#0077B6", text: "#FFFFFF" },
+  "Training Thresholds":               { bg: "#4A148C", text: "#FFFFFF" },
+  "Consequences of Getting It Wrong":  { bg: "#B71C1C", text: "#FFFFFF" },
+  "Training Methods":                  { bg: "#1B5E20", text: "#FFFFFF" },
+};
+
+let deck = [...CARDS];
+let current = 0;
+let status = {}; // card id -> 'know' | 'review'
+let filterTopic = 'all';
+
+function filterCards(topic, btn) {
+  filterTopic = topic;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  deck = topic === 'all' ? [...CARDS] : CARDS.filter(c => c.topic === topic);
+  current = 0;
+  document.getElementById('cardScene').classList.remove('flipped');
+  renderCard();
+}
+
+function renderCard() {
+  const card = deck[current];
+  const col = TOPIC_COLOURS[card.topic] || { bg: '#0D1B2A', text: '#FFFFFF' };
+  const total = deck.length;
+
+  // Front
+  document.getElementById('topicBar').textContent = card.topic;
+  document.getElementById('topicBar').style.background = col.bg;
+  document.getElementById('cardNumFront').textContent = `Card ${current+1} / ${total}`;
+  document.getElementById('cardTerm').textContent = card.term;
+
+  // Back
+  document.getElementById('backTopic').textContent = card.topic;
+  document.getElementById('backTopic').style.color = col.bg;
+  document.getElementById('backTerm').textContent = card.term;
+  document.getElementById('defBox').textContent = card.definition;
+  document.getElementById('defBox').style.borderLeftColor = col.bg;
+  document.getElementById('tipText').textContent = card.examTip;
+  document.getElementById('egText').textContent = card.example;
+
+  // Counter
+  document.getElementById('cardNum').textContent = current + 1;
+  document.getElementById('cardTotal').textContent = total;
+  document.getElementById('progressBadge').textContent = `Card ${current+1} of ${total}`;
+
+  // Progress bar
+  document.getElementById('progressFill').style.width = ((current+1)/total*100) + '%';
+
+  // Nav buttons
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total - 1;
+
+  // Know/Review buttons
+  const s = status[card.id];
+  document.getElementById('knowBtn').classList.toggle('marked', s === 'know');
+  document.getElementById('reviewBtn').classList.toggle('marked', s === 'review');
+
+  // Unflip
+  document.getElementById('cardScene').classList.remove('flipped');
+
+  updateStats();
+}
+
+function flipCard() {
+  document.getElementById('cardScene').classList.toggle('flipped');
+}
+
+function navigate(dir) {
+  current = Math.max(0, Math.min(deck.length-1, current+dir));
+  renderCard();
+}
+
+function shuffleCards() {
+  for (let i = deck.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  current = 0;
+  renderCard();
+}
+
+function markCard(type) {
+  const id = deck[current].id;
+  status[id] = status[id] === type ? undefined : type;
+  document.getElementById('knowBtn').classList.toggle('marked', status[id] === 'know');
+  document.getElementById('reviewBtn').classList.toggle('marked', status[id] === 'review');
+  updateStats();
+}
+
+function updateStats() {
+  const relevant = deck.map(c => c.id);
+  const known = relevant.filter(id => status[id] === 'know').length;
+  const review = relevant.filter(id => status[id] === 'review').length;
+  const unseen = relevant.filter(id => !status[id]).length;
+  document.getElementById('knownCount').textContent = known;
+  document.getElementById('reviewCount').textContent = review;
+  document.getElementById('unseenCount').textContent = unseen;
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  else if (e.key === 'g' || e.key === 'G') markCard('know');
+  else if (e.key === 'r' || e.key === 'R') markCard('review');
+});
+
+renderCard();
+</script>
+</body>
+</html>
