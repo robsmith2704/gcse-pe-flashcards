@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE PE — The Muscular System — Flash Cards</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f0f; }
+  button { font-family: inherit; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const cards = [
+  { id:1, category:"Muscle Types", spec:"1.1.7", q:"What are the THREE types of muscle?", a:["Voluntary (Skeletal)","Involuntary (Smooth)","Cardiac"], tip:"Name all three — one or two will cost you marks." },
+  { id:2, category:"Muscle Types", spec:"1.1.7", q:"Where is VOLUNTARY muscle found and what controls it?", a:["Attached to the skeleton via tendons","Under conscious control","Has a striated (striped) appearance"], tip:"Always link voluntary muscle to the skeleton AND conscious control." },
+  { id:3, category:"Muscle Types", spec:"1.1.7", q:"Where is INVOLUNTARY (smooth) muscle found? What does it do?", a:["Walls of blood vessels","Not under conscious control","Causes vasodilation and vasoconstriction"], tip:"Smooth muscle controls blood flow redistribution during exercise." },
+  { id:4, category:"Muscle Types", spec:"1.1.7", q:"Where is CARDIAC muscle found? What makes it unique?", a:["Found only in the heart","Not under conscious control","Never fatigues — works continuously"], tip:'"Cardiac" = Greek for heart. Only ever found there.' },
+  { id:5, category:"Muscle Types", spec:"1.1.7", q:"What is VASODILATION and which muscle causes it?", a:["Widening of blood vessels","Smooth muscle in arteriole walls relaxes","Increases blood flow to working muscles"], tip:"Vasodilation delivers more oxygen to muscles during exercise." },
+  { id:6, category:"Muscle Types", spec:"1.1.7", q:"What is VASOCONSTRICTION and when does it occur?", a:["Narrowing of blood vessels","Smooth muscle in vessel walls contracts","Redirects blood away from non-working areas (e.g. gut)"], tip:"Vasoconstriction and vasodilation work together in vascular shunting." },
+  { id:7, category:"Key Muscles", spec:"1.1.8", q:"DELTOID — movement and joint?", a:["Abduction of the arm","Shoulder joint (ball and socket)","Example: javelin throw, swimming"], tip:"Deltoid = shoulder. Abduction = arm away from body." },
+  { id:8, category:"Key Muscles", spec:"1.1.8", q:"BICEPS — movement and joint?", a:["Flexion of the elbow","Elbow joint (hinge)","Example: pull-up, catching a ball"], tip:"Biceps bends the elbow. Antagonist: triceps." },
+  { id:9, category:"Key Muscles", spec:"1.1.8", q:"TRICEPS — movement and joint?", a:["Extension of the elbow","Elbow joint (hinge)","Example: push-up, throwing, shot put"], tip:"Triceps straightens the elbow. Antagonist: biceps." },
+  { id:10, category:"Key Muscles", spec:"1.1.8", q:"PECTORALIS MAJOR — movement and joint?", a:["Horizontal adduction / flexion of the arm","Shoulder joint (ball and socket)","Example: chest pass, front crawl pull-through"], tip:"Pecs = chest. Bring the arm across the body." },
+  { id:11, category:"Key Muscles", spec:"1.1.8", q:"LATISSIMUS DORSI — movement and joint?", a:["Adduction and extension of the arm","Shoulder joint (ball and socket)","Example: pull-up, backstroke, rowing"], tip:"Lats = large back muscle. Pulls arm down and back." },
+  { id:12, category:"Key Muscles", spec:"1.1.8", q:"EXTERNAL OBLIQUES — movement?", a:["Trunk rotation and lateral flexion","Acts at the trunk/core","Example: cricket batting, discus, tennis forehand"], tip:"Obliques ≠ abdominals — a common exam error." },
+  { id:13, category:"Key Muscles", spec:"1.1.8", q:"HIP FLEXORS — movement and joint?", a:["Flexion of the hip","Hip joint (ball and socket)","Example: sprint drive phase, kicking a football"], tip:"Hip flexors pull the thigh forward — key for running and kicking." },
+  { id:14, category:"Key Muscles", spec:"1.1.8", q:"GLUTEUS MAXIMUS — movement and joint?", a:["Extension of the hip","Hip joint (ball and socket)","Example: jumping, sprint push-off, cycling"], tip:"Glutes extend the hip. Hip flexors flex it. Classic pair." },
+  { id:15, category:"Key Muscles", spec:"1.1.8", q:"QUADRICEPS — movement and joint?", a:["Extension of the knee","Knee joint (hinge)","Example: kicking a football, squat jump"], tip:"Quads extend the knee. Antagonist: hamstrings." },
+  { id:16, category:"Key Muscles", spec:"1.1.8", q:"HAMSTRINGS — movement and joint?", a:["Flexion of the knee","Knee joint (hinge)","Example: sprinting recovery phase, hurdling"], tip:"Hamstrings bend the knee. Antagonist: quadriceps." },
+  { id:17, category:"Key Muscles", spec:"1.1.8", q:"GASTROCNEMIUS — movement and joint?", a:["Plantarflexion (pointing the foot down)","Ankle joint (hinge)","Example: sprinting, jumping, running push-off"], tip:"Gastrocnemius = calf. Plantarflexion = toes point down." },
+  { id:18, category:"Key Muscles", spec:"1.1.8", q:"TIBIALIS ANTERIOR — movement and joint?", a:["Dorsiflexion (pulling the foot up)","Ankle joint (hinge)","Example: landing from a jump, foot lift when walking"], tip:"Tibialis anterior is antagonist to gastrocnemius at the ankle." },
+  { id:19, category:"Antagonistic Pairs", spec:"1.1.9", q:"What is the AGONIST (prime mover)?", a:["The muscle that CONTRACTS to produce movement","Also called the prime mover","Example: biceps during elbow flexion"], tip:"Agonist = active muscle. Contracts to create the movement." },
+  { id:20, category:"Antagonistic Pairs", spec:"1.1.9", q:"What is the ANTAGONIST?", a:["The muscle that RELAXES to allow movement","Works in opposition to the agonist","Example: triceps during elbow flexion"], tip:"Antagonist = opposing muscle. Must relax or movement is resisted." },
+  { id:21, category:"Antagonistic Pairs", spec:"1.1.9", q:"Antagonistic pair at the ELBOW — both directions?", a:["Flexion: Biceps (agonist) / Triceps (antagonist)","Extension: Triceps (agonist) / Biceps (antagonist)"], tip:"Roles REVERSE with direction — learn both." },
+  { id:22, category:"Antagonistic Pairs", spec:"1.1.9", q:"Antagonistic pair at the KNEE — both directions?", a:["Flexion: Hamstrings (agonist) / Quadriceps (antagonist)","Extension: Quadriceps (agonist) / Hamstrings (antagonist)"], tip:"Classic exam pair — know both directions." },
+  { id:23, category:"Antagonistic Pairs", spec:"1.1.9", q:"Antagonistic pair at the HIP — both directions?", a:["Flexion: Hip flexors (agonist) / Gluteus maximus (antagonist)","Extension: Gluteus maximus (agonist) / Hip flexors (antagonist)"], tip:"Key for running and jumping actions." },
+  { id:24, category:"Antagonistic Pairs", spec:"1.1.9", q:"Antagonistic pair at the ANKLE — both directions?", a:["Plantarflexion: Gastrocnemius (agonist) / Tibialis anterior (antagonist)","Dorsiflexion: Tibialis anterior (agonist) / Gastrocnemius (antagonist)"], tip:"The spec specifically names this pair — learn it." },
+  { id:25, category:"Fibre Types", spec:"1.1.10", q:"What are the THREE muscle fibre types?", a:["Type I — Slow Twitch","Type IIa — Fast Oxidative (intermediate)","Type IIx — Fast Glycolytic"], tip:"All three may be tested — know names AND characteristics." },
+  { id:26, category:"Fibre Types", spec:"1.1.10", q:"Four characteristics of TYPE I (slow twitch) fibres?", a:["Slow speed of contraction","High fatigue resistance","Uses oxygen efficiently (aerobic)","Low force — suited to endurance (marathon, cycling)"], tip:"Type I = marathon runner. Slow but lasts a very long time." },
+  { id:27, category:"Fibre Types", spec:"1.1.10", q:"Four characteristics of TYPE IIx (fast glycolytic) fibres?", a:["Fast speed of contraction","Low fatigue resistance","Anaerobic — produces lactic acid","High force — suited to explosive events (100m, shot put)"], tip:"Type IIx = sprinter. Fast and powerful but tires quickly." },
+  { id:28, category:"Fibre Types", spec:"1.1.10", q:"What are TYPE IIa fibres? What are they suited to?", a:["Intermediate fibre type","Medium speed and fatigue resistance","Mix of aerobic and anaerobic","Suited to 400m, 800m, middle-distance events"], tip:"Type IIa sits between Type I and IIx — middle-distance sports." },
+  { id:29, category:"Fibre Types", spec:"1.1.10", q:"In what ORDER are fibre types recruited as intensity increases?", a:["Type I recruited first (low intensity)","Then Type IIa (moderate–high intensity)","Then Type IIx (maximum intensity / power)"], tip:"Body always starts with slow twitch — recruits fast twitch only when needed." },
+  { id:30, category:"Fibre Types", spec:"1.1.10", q:"Why does a 400m runner fatigue heavily in the final 80m?", a:["Type IIa and IIx work anaerobically at race pace","This produces lactic acid","Lactic acid accumulation causes fatigue and reduces force output — the runner slows"], tip:"Lactic acid = by-product of anaerobic exercise. Causes muscle fatigue." },
+];
+
+const CATEGORIES = ["All","Muscle Types","Key Muscles","Antagonistic Pairs","Fibre Types"];
+const CAT = {
+  "Muscle Types":       { color:"#B71C1C", emoji:"🫀" },
+  "Key Muscles":        { color:"#1565C0", emoji:"💪" },
+  "Antagonistic Pairs": { color:"#2E7D32", emoji:"🔄" },
+  "Fibre Types":        { color:"#E65100", emoji:"⚡" },
+};
+
+function App() {
+  const [filter, setFilter] = useState("All");
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [known, setKnown] = useState(new Set());
+  const [mode, setMode] = useState("browse");
+  const [quiz, setQuiz] = useState([]);
+  const [qi, setQi] = useState(0);
+  const [qf, setQf] = useState(false);
+  const [score, setScore] = useState({ c:0, w:0 });
+  const [done, setDone] = useState(false);
+  const [anim, setAnim] = useState(false);
+
+  const list = filter === "All" ? cards : cards.filter(c => c.category === filter);
+  const card = list[idx];
+  const cfg = card ? CAT[card.category] : CAT["Muscle Types"];
+
+  const nav = (d) => {
+    setAnim(true);
+    setTimeout(() => { setIdx(i => (i+d+list.length)%list.length); setFlipped(false); setAnim(false); }, 180);
+  };
+
+  const startQuiz = () => {
+    const s = [...list].sort(()=>Math.random()-0.5);
+    setQuiz(s); setQi(0); setQf(false); setScore({c:0,w:0}); setDone(false); setMode("quiz");
+  };
+
+  const answer = (ok) => {
+    const ns = { c: score.c+(ok?1:0), w: score.w+(ok?0:1) };
+    setScore(ns);
+    if (qi+1 >= quiz.length) { setScore(ns); setDone(true); }
+    else { setQi(i=>i+1); setQf(false); }
+  };
+
+  const qc = quiz[qi];
+  const qcfg = qc ? CAT[qc.category] : CAT["Muscle Types"];
+  const pct = quiz.length > 0 ? Math.round((score.c/quiz.length)*100) : 0;
+
+  const s = (obj) => Object.entries(obj).map(([k,v])=>`${k.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}:${v}`).join(';');
+
+  return (
+    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0f0f0f 0%,#1a1a2e 50%,#16213e 100%)",fontFamily:"Georgia,serif",padding:"0",overflowX:"hidden"}}>
+
+      {/* Ambient blobs */}
+      <div style={{position:"fixed",top:"-20%",right:"-10%",width:"600px",height:"600px",borderRadius:"50%",background:"radial-gradient(circle,rgba(183,28,28,0.07) 0%,transparent 70%)",pointerEvents:"none",zIndex:0}}/>
+      <div style={{position:"fixed",bottom:"-20%",left:"-10%",width:"500px",height:"500px",borderRadius:"50%",background:"radial-gradient(circle,rgba(21,101,192,0.07) 0%,transparent 70%)",pointerEvents:"none",zIndex:0}}/>
+
+      <div style={{maxWidth:"680px",margin:"0 auto",padding:"28px 16px",position:"relative",zIndex:1}}>
+
+        {/* Header */}
+        <div style={{textAlign:"center",marginBottom:"28px"}}>
+          <div style={{fontSize:"10px",letterSpacing:"4px",color:"#F9A825",textTransform:"uppercase",marginBottom:"8px"}}>Edexcel 1PE0 · Component 1</div>
+          <h1 style={{margin:0,fontSize:"28px",fontWeight:"700",color:"#fff",letterSpacing:"-0.5px"}}>The Muscular System</h1>
+          <div style={{fontSize:"12px",color:"#555",marginTop:"6px",letterSpacing:"1.5px"}}>REVISION FLASH CARDS · 30 CARDS · SPECS 1.1.7–1.1.10</div>
+        </div>
+
+        {/* Mode toggle */}
+        <div style={{display:"flex",gap:"8px",justifyContent:"center",marginBottom:"20px"}}>
+          {[["browse","📖 Browse"],["quiz","🎯 Quiz"]].map(([m,label])=>(
+            <button key={m} onClick={()=>{setMode(m);if(m==="browse"){setIdx(0);setFlipped(false);}}} style={{padding:"9px 26px",borderRadius:"30px",border:"none",cursor:"pointer",fontSize:"13px",fontWeight:"600",letterSpacing:"0.8px",textTransform:"uppercase",background:mode===m?"#F9A825":"rgba(255,255,255,0.07)",color:mode===m?"#000":"#999",transition:"all 0.2s"}}>{label}</button>
+          ))}
+        </div>
+
+        {/* Filter pills */}
+        {mode==="browse" && (
+          <div style={{display:"flex",gap:"6px",flexWrap:"wrap",justifyContent:"center",marginBottom:"24px"}}>
+            {CATEGORIES.map(cat=>{
+              const c = cat==="All" ? {color:"#666"} : CAT[cat];
+              const active = filter===cat;
+              return <button key={cat} onClick={()=>{setFilter(cat);setIdx(0);setFlipped(false);}} style={{padding:"6px 14px",borderRadius:"20px",border:`1.5px solid ${active?c.color:"rgba(255,255,255,0.1)"}`,background:active?c.color:"transparent",color:active?"#fff":"#888",fontSize:"12px",fontWeight:"600",cursor:"pointer",transition:"all 0.2s"}}>{cat!=="All"&&CAT[cat].emoji+" "}{cat}</button>;
+            })}
+          </div>
+        )}
+
+        {/* BROWSE */}
+        {mode==="browse" && card && (
+          <>
+            {/* Progress bar */}
+            <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}}>
+              <span style={{fontSize:"12px",color:"#555",minWidth:"40px"}}>{idx+1}/{list.length}</span>
+              <div style={{flex:1,height:"3px",background:"rgba(255,255,255,0.07)",borderRadius:"2px"}}>
+                <div style={{height:"100%",borderRadius:"2px",background:cfg.color,width:`${((idx+1)/list.length)*100}%`,transition:"width 0.3s"}}/>
+              </div>
+              <span style={{fontSize:"12px",color:cfg.color,fontWeight:"600",minWidth:"100px",textAlign:"right"}}>{card.category}</span>
+            </div>
+
+            {/* Card */}
+            <div onClick={()=>setFlipped(f=>!f)} style={{cursor:"pointer",borderRadius:"22px",minHeight:"360px",marginBottom:"20px",position:"relative",opacity:anim?0:1,transform:anim?"scale(0.97)":"scale(1)",transition:"opacity 0.18s,transform 0.18s",userSelect:"none",boxShadow:"0 24px 64px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05)"}}>
+              {!flipped ? (
+                <div style={{background:`linear-gradient(145deg,${cfg.color}1a 0%,rgba(255,255,255,0.02) 100%)`,border:`1px solid ${cfg.color}33`,borderRadius:"22px",padding:"32px",minHeight:"360px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                  <div>
+                    <div style={{display:"inline-flex",alignItems:"center",gap:"7px",background:cfg.color,borderRadius:"30px",padding:"5px 14px",marginBottom:"22px"}}>
+                      <span style={{fontSize:"14px"}}>{cfg.emoji}</span>
+                      <span style={{color:"#fff",fontSize:"11px",fontWeight:"700",letterSpacing:"1.5px",textTransform:"uppercase"}}>{card.category}</span>
+                    </div>
+                    <div style={{fontSize:"11px",color:"#444",letterSpacing:"2px",marginBottom:"14px",textTransform:"uppercase"}}>Spec {card.spec}</div>
+                    <div style={{fontSize:"22px",fontWeight:"700",color:"#fff",lineHeight:1.45,letterSpacing:"-0.2px"}}>{card.q}</div>
+                  </div>
+                  <div style={{textAlign:"center",color:"#444",fontSize:"12px",display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",marginTop:"28px"}}>
+                    <span style={{width:"26px",height:"26px",borderRadius:"50%",border:"1px solid #333",display:"flex",alignItems:"center",justifyContent:"center"}}>↩</span>
+                    tap to reveal answer
+                  </div>
+                </div>
+              ) : (
+                <div style={{background:"linear-gradient(145deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.015) 100%)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"22px",padding:"32px",minHeight:"360px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                  <div>
+                    <div style={{display:"inline-flex",alignItems:"center",gap:"6px",background:"rgba(255,255,255,0.08)",borderRadius:"30px",padding:"5px 14px",marginBottom:"22px"}}>
+                      <span>✅</span>
+                      <span style={{color:"#fff",fontSize:"11px",fontWeight:"700",letterSpacing:"1.5px"}}>ANSWER</span>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
+                      {card.a.map((pt,i)=>(
+                        <div key={i} style={{display:"flex",alignItems:"flex-start",gap:"10px"}}>
+                          <div style={{width:"22px",height:"22px",minWidth:"22px",borderRadius:"50%",background:cfg.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:"#fff",fontWeight:"700",marginTop:"2px"}}>{i+1}</div>
+                          <span style={{fontSize:"17px",color:"#e5e5e5",lineHeight:1.5}}>{pt}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{marginTop:"20px",background:"rgba(249,168,37,0.07)",border:"1px solid rgba(249,168,37,0.2)",borderRadius:"12px",padding:"11px 14px",display:"flex",gap:"8px",alignItems:"flex-start"}}>
+                    <span style={{fontSize:"15px",flexShrink:0}}>⚡</span>
+                    <span style={{fontSize:"13px",color:"#F9A825",fontStyle:"italic",lineHeight:1.45}}>{card.tip}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Nav */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"14px"}}>
+              <button onClick={()=>nav(-1)} style={{width:"48px",height:"48px",borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"#fff",fontSize:"18px",cursor:"pointer"}}>←</button>
+              <button onClick={()=>setKnown(s=>{const n=new Set(s);n.has(card.id)?n.delete(card.id):n.add(card.id);return n;})} style={{padding:"10px 22px",borderRadius:"30px",border:"none",cursor:"pointer",fontSize:"13px",fontWeight:"700",background:known.has(card.id)?"#2E7D32":"rgba(255,255,255,0.07)",color:"#fff",transition:"all 0.2s"}}>{known.has(card.id)?"✓ Known":"Mark known"}</button>
+              <button onClick={()=>nav(1)} style={{width:"48px",height:"48px",borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"#fff",fontSize:"18px",cursor:"pointer"}}>→</button>
+            </div>
+            {known.size>0 && <div style={{textAlign:"center",marginTop:"12px",fontSize:"12px",color:"#2E7D32"}}>✓ {known.size} of {list.length} marked as known</div>}
+          </>
+        )}
+
+        {/* QUIZ */}
+        {mode==="quiz" && quiz.length===0 && (
+          <div style={{textAlign:"center",padding:"48px 0"}}>
+            <div style={{fontSize:"48px",marginBottom:"16px"}}>🎯</div>
+            <div style={{fontSize:"20px",color:"#fff",marginBottom:"8px",fontWeight:"700"}}>Quiz Mode</div>
+            <div style={{fontSize:"14px",color:"#555",marginBottom:"28px"}}>All {list.length} cards, shuffled randomly</div>
+            <button onClick={startQuiz} style={{padding:"14px 40px",borderRadius:"30px",border:"none",background:"#F9A825",color:"#000",fontWeight:"700",fontSize:"15px",cursor:"pointer",letterSpacing:"0.5px"}}>Start Quiz →</button>
+          </div>
+        )}
+
+        {mode==="quiz" && quiz.length>0 && !done && qc && (
+          <>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
+              <div style={{display:"flex",gap:"12px"}}>
+                <span style={{fontSize:"13px",color:"#4CAF50",fontWeight:"700"}}>✓ {score.c}</span>
+                <span style={{fontSize:"13px",color:"#ef5350",fontWeight:"700"}}>✗ {score.w}</span>
+              </div>
+              <span style={{fontSize:"12px",color:"#555"}}>{qi+1} / {quiz.length}</span>
+            </div>
+            <div style={{height:"4px",background:"rgba(255,255,255,0.06)",borderRadius:"2px",marginBottom:"22px"}}>
+              <div style={{height:"100%",borderRadius:"2px",background:"#F9A825",width:`${(qi/quiz.length)*100}%`,transition:"width 0.3s"}}/>
+            </div>
+
+            <div onClick={()=>setQf(f=>!f)} style={{cursor:"pointer",borderRadius:"22px",minHeight:"300px",marginBottom:"20px",boxShadow:"0 20px 56px rgba(0,0,0,0.55)"}}>
+              {!qf ? (
+                <div style={{background:`linear-gradient(145deg,${qcfg.color}1a,rgba(255,255,255,0.02))`,border:`1px solid ${qcfg.color}33`,borderRadius:"22px",padding:"32px",minHeight:"300px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                  <div>
+                    <div style={{display:"inline-flex",gap:"7px",alignItems:"center",background:qcfg.color,borderRadius:"30px",padding:"4px 13px",marginBottom:"18px"}}>
+                      <span>{qcfg.emoji}</span>
+                      <span style={{color:"#fff",fontSize:"11px",fontWeight:"700",letterSpacing:"1px"}}>{qc.category} · {qc.spec}</span>
+                    </div>
+                    <div style={{fontSize:"21px",fontWeight:"700",color:"#fff",lineHeight:1.45}}>{qc.q}</div>
+                  </div>
+                  <div style={{textAlign:"center",color:"#444",fontSize:"12px"}}>tap to reveal answer</div>
+                </div>
+              ) : (
+                <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"22px",padding:"32px",minHeight:"300px",display:"flex",flexDirection:"column",gap:"10px"}}>
+                  <div style={{fontSize:"11px",color:"#555",letterSpacing:"2px",marginBottom:"6px",textTransform:"uppercase"}}>Answer</div>
+                  {qc.a.map((p,i)=>(
+                    <div key={i} style={{display:"flex",gap:"10px",alignItems:"flex-start"}}>
+                      <div style={{width:"20px",height:"20px",minWidth:"20px",borderRadius:"50%",background:qcfg.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px",color:"#fff",fontWeight:"700"}}>{i+1}</div>
+                      <span style={{fontSize:"16px",color:"#e0e0e0",lineHeight:1.5}}>{p}</span>
+                    </div>
+                  ))}
+                  <div style={{marginTop:"8px",background:"rgba(249,168,37,0.07)",border:"1px solid rgba(249,168,37,0.18)",borderRadius:"10px",padding:"9px 13px"}}>
+                    <span style={{fontSize:"12px",color:"#F9A825",fontStyle:"italic"}}>⚡ {qc.tip}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {qf && (
+              <div style={{display:"flex",gap:"12px"}}>
+                <button onClick={()=>answer(false)} style={{flex:1,padding:"15px",borderRadius:"14px",border:"1.5px solid rgba(183,28,28,0.4)",background:"rgba(183,28,28,0.08)",color:"#ef9a9a",fontSize:"15px",fontWeight:"700",cursor:"pointer"}}>✗  Still learning</button>
+                <button onClick={()=>answer(true)} style={{flex:1,padding:"15px",borderRadius:"14px",border:"1.5px solid rgba(46,125,50,0.4)",background:"rgba(46,125,50,0.1)",color:"#a5d6a7",fontSize:"15px",fontWeight:"700",cursor:"pointer"}}>✓  Got it</button>
+              </div>
+            )}
+          </>
+        )}
+
+        {mode==="quiz" && done && (
+          <div style={{textAlign:"center",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"22px",padding:"44px 24px"}}>
+            <div style={{fontSize:"52px",marginBottom:"14px"}}>{pct>=80?"🏆":pct>=60?"💪":"📚"}</div>
+            <div style={{fontSize:"48px",fontWeight:"700",color:pct>=80?"#F9A825":"#fff",marginBottom:"6px"}}>{pct}%</div>
+            <div style={{fontSize:"14px",color:"#555",marginBottom:"28px"}}>{score.c} correct · {score.w} to review · {quiz.length} total</div>
+            <div style={{height:"8px",background:"rgba(255,255,255,0.05)",borderRadius:"4px",marginBottom:"32px",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:"4px",background:pct>=80?"#F9A825":"#B71C1C",width:`${pct}%`,transition:"width 1.2s"}}/>
+            </div>
+            <div style={{display:"flex",gap:"10px",justifyContent:"center"}}>
+              <button onClick={startQuiz} style={{padding:"13px 32px",borderRadius:"30px",border:"none",background:"#F9A825",color:"#000",fontWeight:"700",fontSize:"14px",cursor:"pointer"}}>Retry</button>
+              <button onClick={()=>{setMode("browse");setQuiz([]);}} style={{padding:"13px 32px",borderRadius:"30px",border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:"#fff",fontWeight:"600",fontSize:"14px",cursor:"pointer"}}>Browse</button>
+            </div>
+          </div>
+        )}
+
+        <div style={{textAlign:"center",marginTop:"36px",fontSize:"11px",color:"#2a2a2a",letterSpacing:"2px"}}>GCSE PE · EDEXCEL 1PE0 · THE MUSCULAR SYSTEM</div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

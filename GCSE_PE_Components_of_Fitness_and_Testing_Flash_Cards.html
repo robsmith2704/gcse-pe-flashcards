@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE PE — Components of Fitness &amp; Testing — Flash Cards</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#0f1923}button{font-family:inherit}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const cards = [
+  {
+    "id": 1,
+    "category": "Health-Related",
+    "q": "Define CARDIOVASCULAR FITNESS.",
+    "a": [
+      "The ability of the heart and lungs to supply oxygen to the working muscles during sustained exercise.",
+      "Also called aerobic endurance.",
+      "Sport: marathon runner maintaining pace for 2+ hours."
+    ],
+    "tip": "Include heart AND lungs AND oxygen AND sustained exercise. Missing any one costs marks."
+  },
+  {
+    "id": 2,
+    "category": "Health-Related",
+    "q": "Define MUSCULAR ENDURANCE.",
+    "a": [
+      "The ability of a muscle or group of muscles to perform repeated contractions over a prolonged period without fatiguing.",
+      "Sport: rower pulling 2000m — legs and arms contracting repeatedly throughout."
+    ],
+    "tip": "Key words: REPEATED contractions WITHOUT fatiguing. The most commonly confused component with muscular strength."
+  },
+  {
+    "id": 3,
+    "category": "Health-Related",
+    "q": "Define MUSCULAR STRENGTH.",
+    "a": [
+      "The maximum force a muscle or group of muscles can exert in a single contraction.",
+      "Sport: rugby prop generating maximum force in a scrum."
+    ],
+    "tip": "Strength = ONE maximum effort. Endurance = REPEATED efforts. These are the most confused pair in the spec."
+  },
+  {
+    "id": 4,
+    "category": "Health-Related",
+    "q": "Define FLEXIBILITY.",
+    "a": [
+      "The range of movement possible at a joint.",
+      "Sport: gymnast performing full splits — maximum range required at the hip joint."
+    ],
+    "tip": "Range of movement at a JOINT. Do not say \"range of movement of muscles\" — that is incorrect."
+  },
+  {
+    "id": 5,
+    "category": "Health-Related",
+    "q": "Define BODY COMPOSITION.",
+    "a": [
+      "The ratio of fat mass to fat-free mass (muscle, bone and organs) in the body.",
+      "Sport: lightweight boxer maintaining weight category with low body fat percentage."
+    ],
+    "tip": "Not just body fat — it's the RATIO of fat to fat-free mass. Always mention both sides."
+  },
+  {
+    "id": 6,
+    "category": "Skill-Related",
+    "q": "Define AGILITY.",
+    "a": [
+      "The ability to change body position and direction quickly and accurately while maintaining control.",
+      "Sport: netball player rapidly changing direction to dodge a defender."
+    ],
+    "tip": "Three elements: change direction QUICKLY, ACCURATELY, while MAINTAINING CONTROL. All three belong in a full definition."
+  },
+  {
+    "id": 7,
+    "category": "Skill-Related",
+    "q": "Define BALANCE.",
+    "a": [
+      "The ability to maintain the body's centre of mass over its base of support.",
+      "Sport: gymnast holding a handstand — centre of mass over the hands."
+    ],
+    "tip": "Centre of mass over BASE OF SUPPORT. Static (still) vs dynamic (moving) balance — both are relevant."
+  },
+  {
+    "id": 8,
+    "category": "Skill-Related",
+    "q": "Define COORDINATION.",
+    "a": [
+      "The ability to use different parts of the body together smoothly and efficiently.",
+      "Sport: cricketer timing a drive — hand, eye, feet and shoulder in sync."
+    ],
+    "tip": "Different PARTS of the body working together. Don't confuse with agility (direction change)."
+  },
+  {
+    "id": 9,
+    "category": "Skill-Related",
+    "q": "Define POWER.",
+    "a": [
+      "The ability to exert maximum muscular force as quickly as possible.",
+      "Power = Strength × Speed.",
+      "Sport: shot putter generating maximum force through the kinetic chain."
+    ],
+    "tip": "CRITICAL formula: Power = Strength × Speed. Requires BOTH force AND velocity — different from strength or speed alone."
+  },
+  {
+    "id": 10,
+    "category": "Skill-Related",
+    "q": "Define REACTION TIME.",
+    "a": [
+      "The time between a stimulus being given and the start of the movement in response to it.",
+      "Sport: 100m sprinter responding to the starting gun."
+    ],
+    "tip": "Stimulus → movement START. Reaction time ends when movement begins. After that, speed takes over."
+  },
+  {
+    "id": 11,
+    "category": "Skill-Related",
+    "q": "Define SPEED.",
+    "a": [
+      "The maximum rate at which an individual can perform a movement or travel a distance.",
+      "Sport: 100m sprinter maintaining top velocity after the acceleration phase."
+    ],
+    "tip": "Maximum RATE of movement. Not the same as reaction time (delay before movement starts) or power (which involves force)."
+  },
+  {
+    "id": 12,
+    "category": "Fitness Tests",
+    "q": "Which fitness test measures CARDIOVASCULAR FITNESS? Name all three spec options.",
+    "a": [
+      "Cooper 12-minute run — run as far as possible in 12 minutes. Result: distance in metres.",
+      "Cooper 12-minute swim — same protocol in a pool.",
+      "Harvard Step Test — step on/off a 45cm bench for 5 minutes; heart rate measured during recovery. Result: Fitness Index score."
+    ],
+    "tip": "The spec gives THREE options for cardiovascular fitness — the only component with multiple tests. Know all three names."
+  },
+  {
+    "id": 13,
+    "category": "Fitness Tests",
+    "q": "What test measures MUSCULAR STRENGTH? Describe the protocol.",
+    "a": [
+      "Grip dynamometer test.",
+      "Protocol: hold the dynamometer in the dominant hand with dial facing away; squeeze as hard as possible for a few seconds; record highest reading from 3 attempts.",
+      "Result: maximum force in kilograms (kg). Higher = greater strength."
+    ],
+    "tip": "Limitation: only measures grip/forearm strength — not a complete measure of overall muscular strength. This limitation is exam-relevant."
+  },
+  {
+    "id": 14,
+    "category": "Fitness Tests",
+    "q": "What tests measure MUSCULAR ENDURANCE? Name both and describe each.",
+    "a": [
+      "1-minute sit-up test: as many sit-ups as possible in 60 seconds. Tests abdominal endurance.",
+      "1-minute press-up test: as many press-ups as possible in 60 seconds. Tests upper body endurance.",
+      "Both are in the spec — examiners may ask you to distinguish between them."
+    ],
+    "tip": "Two tests, both for the same component, testing different muscle groups. Sit-up = abdominal; press-up = upper body."
+  },
+  {
+    "id": 15,
+    "category": "Fitness Tests",
+    "q": "What test measures FLEXIBILITY? Describe the protocol.",
+    "a": [
+      "Sit and reach test.",
+      "Protocol: sit with legs straight and feet flat against the box. Reach forward with both hands along the scale. Hold the furthest point for 2 seconds.",
+      "Result: distance in cm. Higher = greater flexibility."
+    ],
+    "tip": "Primarily tests flexibility of the LOWER BACK and HAMSTRINGS — not overall flexibility. Feet must stay flat against the box throughout."
+  },
+  {
+    "id": 16,
+    "category": "Fitness Tests",
+    "q": "What test measures AGILITY? Describe the setup and protocol.",
+    "a": [
+      "Illinois agility test.",
+      "Setup: 8 cones in a 10m × 5m course with a zigzag section down the centre.",
+      "Protocol: athlete lies face down at start; gets up on \"go\" and runs the full course without knocking cones. Time recorded.",
+      "Result: time in seconds. Lower = better agility."
+    ],
+    "tip": "Athlete LIES FACE DOWN at the start — this is a specific protocol detail examiners test. Course layout is standardised."
+  },
+  {
+    "id": 17,
+    "category": "Fitness Tests",
+    "q": "What test measures BALANCE? Describe the protocol.",
+    "a": [
+      "Stork stand test.",
+      "Protocol: stand on dominant leg, place non-dominant foot against the inside knee, hands on hips, raise heel off floor. Time how long balance is maintained.",
+      "Result: time in seconds. Longer = better balance.",
+      "Test ends when raised foot touches floor or standing heel touches down."
+    ],
+    "tip": "Static balance only. The raised foot touching the floor ends the test — one of the specific details examiners check."
+  },
+  {
+    "id": 18,
+    "category": "Fitness Tests",
+    "q": "What test measures COORDINATION? Describe the protocol.",
+    "a": [
+      "Alternate hand wall toss.",
+      "Protocol: stand 2m from a wall. Throw a tennis ball against the wall with one hand and catch it with the OTHER hand. Repeat for 30 seconds.",
+      "Result: number of successful catches. Higher = better coordination."
+    ],
+    "tip": "Both throwing AND catching must alternate hands throughout. This is what makes it a coordination test rather than a reaction time test."
+  },
+  {
+    "id": 19,
+    "category": "Fitness Tests",
+    "q": "What test measures POWER? Describe the protocol.",
+    "a": [
+      "Vertical jump test.",
+      "Protocol: stand next to a wall, reach up and mark height. Jump as high as possible and mark highest point. Measure the difference. Best of 3 attempts.",
+      "Result: jump height in cm. Higher = greater power."
+    ],
+    "tip": "Measures LEG power specifically. Requires both force (strength) and velocity (speed) — that's what makes it a power test, not just a strength or speed test."
+  },
+  {
+    "id": 20,
+    "category": "Fitness Tests",
+    "q": "What test measures REACTION TIME? Describe the protocol and explain the counterintuitive result.",
+    "a": [
+      "Ruler drop test.",
+      "Protocol: partner holds ruler at 0cm mark. Participant's finger and thumb hover either side without touching. Partner drops without warning. Participant catches it. Record where caught.",
+      "Result: distance in cm. LOWER = FASTER reaction time.",
+      "Why: shorter drop = less time elapsed before catching = faster response."
+    ],
+    "tip": "COUNTERINTUITIVE: lower distance = better result. This is the most commonly reversed result in the spec. The shorter the drop, the faster the reaction."
+  },
+  {
+    "id": 21,
+    "category": "Fitness Tests",
+    "q": "What test measures SPEED? Describe the protocol.",
+    "a": [
+      "30m sprint test.",
+      "Protocol: athlete sprints 30m from a standing start after a full warm-up. Time recorded electronically where possible. Best of 2–3 attempts.",
+      "Result: time in seconds. Lower = faster speed."
+    ],
+    "tip": "A slow reaction from the standing start can slightly inflate the time — this is a limitation of the test compared to using starting blocks."
+  },
+  {
+    "id": 22,
+    "category": "Fitness Tests",
+    "q": "What test measures BODY COMPOSITION? Name both options and explain the limitation of BMI.",
+    "a": [
+      "BMI (Body Mass Index): weight (kg) ÷ height (m²). Simple but limited.",
+      "Skinfold callipers: measure skinfold thickness at set body sites; add measurements; compare to norms.",
+      "BMI limitation: does not distinguish fat mass from muscle mass. A muscular athlete may score \"overweight\" despite very low body fat.",
+      "Skinfold callipers are more accurate for athletes."
+    ],
+    "tip": "For athletes, skinfold callipers are always the better test. BMI is a population screening tool, not an athlete assessment tool."
+  },
+  {
+    "id": 23,
+    "category": "Data Interpretation",
+    "q": "What is the 5-step method for answering fitness test data questions?",
+    "a": [
+      "Step 1: Read the test result from the question.",
+      "Step 2: Locate the correct row in the normative data table.",
+      "Step 3: State the category clearly (e.g. \"This is Average\").",
+      "Step 4: Compare — explain what this means for the athlete.",
+      "Step 5: Recommend — state what training would improve the score."
+    ],
+    "tip": "Steps 4 and 5 are where most marks are dropped. Identifying the category (Step 3) alone is only 1 mark. The evaluation and recommendation earn the rest."
+  },
+  {
+    "id": 24,
+    "category": "Data Interpretation",
+    "q": "Cooper run normative data (males). What are the five categories and their distances?",
+    "a": [
+      "Excellent: >3700m",
+      "Good: 3400–3699m",
+      "Average: 3100–3399m",
+      "Below average: 2800–3099m",
+      "Poor: <2800m"
+    ],
+    "tip": "You do not need to memorise these exactly — the table is provided in the exam. You DO need to read it correctly and apply the right category."
+  },
+  {
+    "id": 25,
+    "category": "Data Interpretation",
+    "q": "Illinois agility test normative data (males). What are the five categories and their times?",
+    "a": [
+      "Excellent: <15.2 seconds",
+      "Good: 15.2–16.1 seconds",
+      "Average: 16.2–18.1 seconds",
+      "Below average: 18.2–19.3 seconds",
+      "Poor: >19.3 seconds"
+    ],
+    "tip": "For time-based tests: LOWER time = BETTER performance. Don't confuse the direction — it's the opposite of distance-based tests."
+  },
+  {
+    "id": 26,
+    "category": "Exam Technique",
+    "q": "How do you justify TEST SELECTION in an exam question?",
+    "a": [
+      "Name the test correctly.",
+      "Link the test to the component definition: \"The Illinois agility test measures the ability to change direction quickly and accurately while maintaining control.\"",
+      "Explain why this matters for the specific sport: \"This is essential for a netball player who must constantly evade defenders.\"",
+      "Close the loop: test design → component → sport-specific demand."
+    ],
+    "tip": "Never just name the test. Always close the loop: test → component → why it matters for that sport or athlete. Each step earns marks."
+  },
+  {
+    "id": 27,
+    "category": "Exam Technique",
+    "q": "What are the six PURPOSES of fitness testing?",
+    "a": [
+      "1. Identify strengths and weaknesses",
+      "2. Set training targets",
+      "3. Monitor progress over time",
+      "4. Compare against normative data",
+      "5. Inform training programme design",
+      "6. Talent identification / selection"
+    ],
+    "tip": "Any four of these with a sport-specific explanation earns full marks on a typical 4-mark question. Generic answers without context score less."
+  },
+  {
+    "id": 28,
+    "category": "Exam Technique",
+    "q": "How do you structure a 9-mark EVALUATE question on components of fitness?",
+    "a": [
+      "AO1 (3 marks): Define THREE components accurately using correct terminology.",
+      "AO2 (3 marks): Apply each to the specific sport/athlete in the question.",
+      "AO3 (3 marks): Rank components — which is MOST important and why? Which is less critical? Reach a conclusion."
+    ],
+    "tip": "AO1 alone = maximum 3 marks. You CANNOT reach Level 3 without evaluating. Rank the components against each other and justify your conclusion."
+  }
+];
+
+const CATEGORIES = ["All","Health-Related","Skill-Related","Fitness Tests","Data Interpretation","Exam Technique"];
+const CAT_CONFIG = {
+  "Health-Related":      { color:"0077B6", emoji:"❤️" },
+  "Skill-Related":       { color:"1A6B3C", emoji:"⚡" },
+  "Fitness Tests":       { color:"4A148C", emoji:"🧪" },
+  "Data Interpretation": { color:"E65100", emoji:"📊" },
+  "Exam Technique":      { color:"B71C1C", emoji:"📝" },
+};
+
+function App() {
+  const [filter, setFilter] = useState("All");
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [known, setKnown] = useState(new Set());
+  const [mode, setMode] = useState("browse");
+  const [quiz, setQuiz] = useState([]);
+  const [qi, setQi] = useState(0);
+  const [qf, setQf] = useState(false);
+  const [score, setScore] = useState({ c:0, w:0 });
+  const [done, setDone] = useState(false);
+  const [anim, setAnim] = useState(false);
+
+  const list = filter === "All" ? cards : cards.filter(c => c.category === filter);
+  const card = list[idx];
+  const cfg = card ? CAT_CONFIG[card.category] : CAT_CONFIG["Health-Related"];
+
+  const nav = (d) => {
+    setAnim(true);
+    setTimeout(() => { setIdx(i => (i+d+list.length)%list.length); setFlipped(false); setAnim(false); }, 180);
+  };
+  const startQuiz = () => {
+    const s = [...list].sort(()=>Math.random()-0.5);
+    setQuiz(s); setQi(0); setQf(false); setScore({c:0,w:0}); setDone(false); setMode("quiz");
+  };
+  const answer = (ok) => {
+    const ns = { c:score.c+(ok?1:0), w:score.w+(ok?0:1) };
+    setScore(ns);
+    if (qi+1>=quiz.length) { setScore(ns); setDone(true); }
+    else { setQi(i=>i+1); setQf(false); }
+  };
+  const qc = quiz[qi];
+  const qcfg = qc ? CAT_CONFIG[qc.category] : CAT_CONFIG["Health-Related"];
+  const pct = quiz.length > 0 ? Math.round((score.c/quiz.length)*100) : 0;
+
+  return (
+    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#0f1923 0%,#0D1B2A 60%,#0a1628 100%)", fontFamily:"Georgia,serif", padding:"0", overflowX:"hidden" }}>
+      <div style={{ position:"fixed", top:"-20%", right:"-10%", width:"600px", height:"600px", borderRadius:"50%", background:"radial-gradient(circle,rgba(0,119,182,0.08) 0%,transparent 70%)", pointerEvents:"none", zIndex:0 }}/>
+      <div style={{ position:"fixed", bottom:"-20%", left:"-10%", width:"500px", height:"500px", borderRadius:"50%", background:"radial-gradient(circle,rgba(249,168,37,0.06) 0%,transparent 70%)", pointerEvents:"none", zIndex:0 }}/>
+      <div style={{ maxWidth:"700px", margin:"0 auto", padding:"28px 16px", position:"relative", zIndex:1 }}>
+        <div style={{ textAlign:"center", marginBottom:"28px" }}>
+          <div style={{ fontSize:"10px", letterSpacing:"4px", color:"#F9A825", textTransform:"uppercase", marginBottom:"8px" }}>Edexcel 1PE0 · Component 1 · Topics 3.2.1–3.2.4</div>
+          <h1 style={{ margin:0, fontSize:"24px", fontWeight:"700", color:"#fff", letterSpacing:"-0.5px" }}>Components of Fitness & Testing</h1>
+          <div style={{ fontSize:"12px", color:"#555", marginTop:"6px", letterSpacing:"1.5px" }}>REVISION FLASH CARDS · 28 CARDS</div>
+        </div>
+        <div style={{ display:"flex", gap:"8px", justifyContent:"center", marginBottom:"20px" }}>
+          {[["browse","📖 Browse"],["quiz","🎯 Quiz"]].map(([m,label])=>(
+            <button key={m} onClick={()=>{setMode(m);if(m==="browse"){setIdx(0);setFlipped(false);}}} style={{ padding:"9px 26px", borderRadius:"30px", border:"none", cursor:"pointer", fontSize:"13px", fontWeight:"600", letterSpacing:"0.8px", textTransform:"uppercase", background:mode===m?"#F9A825":"rgba(255,255,255,0.07)", color:mode===m?"#000":"#999", transition:"all 0.2s" }}>{label}</button>
+          ))}
+        </div>
+        {mode==="browse" && (
+          <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", justifyContent:"center", marginBottom:"24px" }}>
+            {CATEGORIES.map(cat => {
+              const c = cat==="All" ? {color:"666"} : CAT_CONFIG[cat];
+              const active = filter===cat;
+              return <button key={cat} onClick={()=>{setFilter(cat);setIdx(0);setFlipped(false);}} style={{ padding:"6px 14px", borderRadius:"20px", border:`1.5px solid ${active?"#"+c.color:"rgba(255,255,255,0.1)"}`, background:active?"#"+c.color:"transparent", color:active?"#fff":"#888", fontSize:"12px", fontWeight:"600", cursor:"pointer", transition:"all 0.2s" }}>{cat!=="All"&&CAT_CONFIG[cat].emoji+" "}{cat}</button>;
+            })}
+          </div>
+        )}
+        {mode==="browse" && card && (
+          <>
+            <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"14px" }}>
+              <span style={{ fontSize:"12px", color:"#555", minWidth:"44px" }}>{idx+1}/{list.length}</span>
+              <div style={{ flex:1, height:"3px", background:"rgba(255,255,255,0.07)", borderRadius:"2px" }}>
+                <div style={{ height:"100%", borderRadius:"2px", background:"#"+cfg.color, width:`${((idx+1)/list.length)*100}%`, transition:"width 0.3s" }}/>
+              </div>
+              <span style={{ fontSize:"12px", color:"#"+cfg.color, fontWeight:"600" }}>{card.category}</span>
+            </div>
+            <div onClick={()=>setFlipped(f=>!f)} style={{ cursor:"pointer", borderRadius:"22px", minHeight:"360px", marginBottom:"20px", opacity:anim?0:1, transform:anim?"scale(0.97)":"scale(1)", transition:"opacity 0.18s,transform 0.18s", userSelect:"none", boxShadow:"0 24px 64px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05)" }}>
+              {!flipped ? (
+                <div style={{ background:`linear-gradient(145deg,${"#"+cfg.color}1a 0%,rgba(255,255,255,0.02) 100%)`, border:`1px solid ${"#"+cfg.color}33`, borderRadius:"22px", padding:"32px", minHeight:"360px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
+                  <div>
+                    <div style={{ display:"inline-flex", alignItems:"center", gap:"7px", background:"#"+cfg.color, borderRadius:"30px", padding:"5px 14px", marginBottom:"22px" }}>
+                      <span style={{ fontSize:"14px" }}>{cfg.emoji}</span>
+                      <span style={{ color:"#fff", fontSize:"11px", fontWeight:"700", letterSpacing:"1.5px", textTransform:"uppercase" }}>{card.category}</span>
+                    </div>
+                    <div style={{ fontSize:"11px", color:"#444", letterSpacing:"2px", marginBottom:"14px", textTransform:"uppercase" }}>Spec 3.2.1–3.2.4</div>
+                    <div style={{ fontSize:"21px", fontWeight:"700", color:"#fff", lineHeight:1.45 }}>{card.q}</div>
+                  </div>
+                  <div style={{ textAlign:"center", color:"#444", fontSize:"12px", display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", marginTop:"28px" }}>
+                    <span style={{ width:"26px", height:"26px", borderRadius:"50%", border:"1px solid #333", display:"flex", alignItems:"center", justifyContent:"center" }}>↩</span>
+                    tap to reveal answer
+                  </div>
+                </div>
+              ) : (
+                <div style={{ background:"linear-gradient(145deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.015) 100%)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"22px", padding:"32px", minHeight:"360px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
+                  <div>
+                    <div style={{ display:"inline-flex", alignItems:"center", gap:"6px", background:"rgba(255,255,255,0.08)", borderRadius:"30px", padding:"5px 14px", marginBottom:"22px" }}>
+                      <span>✅</span>
+                      <span style={{ color:"#fff", fontSize:"11px", fontWeight:"700", letterSpacing:"1.5px" }}>ANSWER</span>
+                    </div>
+                    <div style={{ display:"flex", flexDirection:"column", gap:"12px" }}>
+                      {card.a.map((pt,i)=>(
+                        <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:"10px" }}>
+                          <div style={{ width:"22px", height:"22px", minWidth:"22px", borderRadius:"50%", background:"#"+cfg.color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"11px", color:"#fff", fontWeight:"700", marginTop:"2px" }}>{i+1}</div>
+                          <span style={{ fontSize:"16px", color:"#e5e5e5", lineHeight:1.5 }}>{pt}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ marginTop:"20px", background:"rgba(249,168,37,0.07)", border:"1px solid rgba(249,168,37,0.2)", borderRadius:"12px", padding:"11px 14px", display:"flex", gap:"8px", alignItems:"flex-start" }}>
+                    <span style={{ fontSize:"15px", flexShrink:0 }}>⚡</span>
+                    <span style={{ fontSize:"13px", color:"#F9A825", fontStyle:"italic", lineHeight:1.45 }}>{card.tip}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"14px" }}>
+              <button onClick={()=>nav(-1)} style={{ width:"48px", height:"48px", borderRadius:"50%", border:"1px solid rgba(255,255,255,0.12)", background:"rgba(255,255,255,0.04)", color:"#fff", fontSize:"18px", cursor:"pointer" }}>←</button>
+              <button onClick={()=>setKnown(s=>{const n=new Set(s);n.has(card.id)?n.delete(card.id):n.add(card.id);return n;})} style={{ padding:"10px 22px", borderRadius:"30px", border:"none", cursor:"pointer", fontSize:"13px", fontWeight:"700", background:known.has(card.id)?"#2E7D32":"rgba(255,255,255,0.07)", color:"#fff", transition:"all 0.2s" }}>{known.has(card.id)?"✓ Known":"Mark known"}</button>
+              <button onClick={()=>nav(1)} style={{ width:"48px", height:"48px", borderRadius:"50%", border:"1px solid rgba(255,255,255,0.12)", background:"rgba(255,255,255,0.04)", color:"#fff", fontSize:"18px", cursor:"pointer" }}>→</button>
+            </div>
+            {known.size>0 && <div style={{ textAlign:"center", marginTop:"12px", fontSize:"12px", color:"#2E7D32" }}>✓ {known.size} of {list.length} marked as known</div>}
+          </>
+        )}
+        {mode==="quiz" && quiz.length===0 && (
+          <div style={{ textAlign:"center", padding:"48px 0" }}>
+            <div style={{ fontSize:"48px", marginBottom:"16px" }}>🎯</div>
+            <div style={{ fontSize:"20px", color:"#fff", marginBottom:"8px", fontWeight:"700" }}>Quiz Mode</div>
+            <div style={{ fontSize:"14px", color:"#555", marginBottom:"28px" }}>All {list.length} cards, shuffled randomly</div>
+            <button onClick={startQuiz} style={{ padding:"14px 40px", borderRadius:"30px", border:"none", background:"#F9A825", color:"#000", fontWeight:"700", fontSize:"15px", cursor:"pointer" }}>Start Quiz →</button>
+          </div>
+        )}
+        {mode==="quiz" && quiz.length>0 && !done && qc && (
+          <>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"10px" }}>
+              <div style={{ display:"flex", gap:"12px" }}>
+                <span style={{ fontSize:"13px", color:"#4CAF50", fontWeight:"700" }}>✓ {score.c}</span>
+                <span style={{ fontSize:"13px", color:"#ef5350", fontWeight:"700" }}>✗ {score.w}</span>
+              </div>
+              <span style={{ fontSize:"12px", color:"#555" }}>{qi+1} / {quiz.length}</span>
+            </div>
+            <div style={{ height:"4px", background:"rgba(255,255,255,0.06)", borderRadius:"2px", marginBottom:"22px" }}>
+              <div style={{ height:"100%", borderRadius:"2px", background:"#F9A825", width:`${(qi/quiz.length)*100}%`, transition:"width 0.3s" }}/>
+            </div>
+            <div onClick={()=>setQf(f=>!f)} style={{ cursor:"pointer", borderRadius:"22px", minHeight:"300px", marginBottom:"20px", boxShadow:"0 20px 56px rgba(0,0,0,0.55)" }}>
+              {!qf ? (
+                <div style={{ background:`linear-gradient(145deg,${"#"+qcfg.color}1a,rgba(255,255,255,0.02))`, border:`1px solid ${"#"+qcfg.color}33`, borderRadius:"22px", padding:"32px", minHeight:"300px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
+                  <div>
+                    <div style={{ display:"inline-flex", gap:"7px", alignItems:"center", background:"#"+qcfg.color, borderRadius:"30px", padding:"4px 13px", marginBottom:"18px" }}>
+                      <span>{qcfg.emoji}</span>
+                      <span style={{ color:"#fff", fontSize:"11px", fontWeight:"700", letterSpacing:"1px" }}>{qc.category}</span>
+                    </div>
+                    <div style={{ fontSize:"20px", fontWeight:"700", color:"#fff", lineHeight:1.45 }}>{qc.q}</div>
+                  </div>
+                  <div style={{ textAlign:"center", color:"#444", fontSize:"12px" }}>tap to reveal answer</div>
+                </div>
+              ) : (
+                <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"22px", padding:"32px", minHeight:"300px", display:"flex", flexDirection:"column", gap:"10px" }}>
+                  {qc.a.map((p,i)=>(
+                    <div key={i} style={{ display:"flex", gap:"10px", alignItems:"flex-start" }}>
+                      <div style={{ width:"20px", height:"20px", minWidth:"20px", borderRadius:"50%", background:"#"+qcfg.color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"10px", color:"#fff", fontWeight:"700" }}>{i+1}</div>
+                      <span style={{ fontSize:"15px", color:"#e0e0e0", lineHeight:1.5 }}>{p}</span>
+                    </div>
+                  ))}
+                  <div style={{ marginTop:"8px", background:"rgba(249,168,37,0.07)", border:"1px solid rgba(249,168,37,0.18)", borderRadius:"10px", padding:"9px 13px" }}>
+                    <span style={{ fontSize:"12px", color:"#F9A825", fontStyle:"italic" }}>⚡ {qc.tip}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            {qf && (
+              <div style={{ display:"flex", gap:"12px" }}>
+                <button onClick={()=>answer(false)} style={{ flex:1, padding:"15px", borderRadius:"14px", border:"1.5px solid rgba(183,28,28,0.4)", background:"rgba(183,28,28,0.08)", color:"#ef9a9a", fontSize:"15px", fontWeight:"700", cursor:"pointer" }}>✗  Still learning</button>
+                <button onClick={()=>answer(true)} style={{ flex:1, padding:"15px", borderRadius:"14px", border:"1.5px solid rgba(46,125,50,0.4)", background:"rgba(46,125,50,0.1)", color:"#a5d6a7", fontSize:"15px", fontWeight:"700", cursor:"pointer" }}>✓  Got it</button>
+              </div>
+            )}
+          </>
+        )}
+        {mode==="quiz" && done && (
+          <div style={{ textAlign:"center", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:"22px", padding:"44px 24px" }}>
+            <div style={{ fontSize:"52px", marginBottom:"14px" }}>{pct>=80?"🏆":pct>=60?"💪":"📚"}</div>
+            <div style={{ fontSize:"48px", fontWeight:"700", color:pct>=80?"#F9A825":"#fff", marginBottom:"6px" }}>{pct}%</div>
+            <div style={{ fontSize:"14px", color:"#555", marginBottom:"28px" }}>{score.c} correct · {score.w} to review · {quiz.length} total</div>
+            <div style={{ display:"flex", gap:"10px", justifyContent:"center" }}>
+              <button onClick={startQuiz} style={{ padding:"13px 32px", borderRadius:"30px", border:"none", background:"#F9A825", color:"#000", fontWeight:"700", fontSize:"14px", cursor:"pointer" }}>Retry</button>
+              <button onClick={()=>{setMode("browse");setQuiz([]);}} style={{ padding:"13px 32px", borderRadius:"30px", border:"1px solid rgba(255,255,255,0.15)", background:"transparent", color:"#fff", fontWeight:"600", fontSize:"14px", cursor:"pointer" }}>Browse</button>
+            </div>
+          </div>
+        )}
+        <div style={{ textAlign:"center", marginTop:"36px", fontSize:"11px", color:"#2a2a2a", letterSpacing:"2px" }}>GCSE PE · EDEXCEL 1PE0 · COMPONENTS OF FITNESS & TESTING</div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
