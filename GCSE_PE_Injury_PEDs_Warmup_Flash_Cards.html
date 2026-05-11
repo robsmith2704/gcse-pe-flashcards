@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Injury, PEDs & Warm-up/Cool-down — GCSE PE Flash Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #7c2d12;
+    --accent-dim: #7c2d1233;
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222636;
+    --border: #2e3347;
+    --text: #e8eaf0;
+    --text-dim: #7b82a0;
+    --radius: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── Header ── */
+  header {
+    width: 100%;
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .spec-badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .subtitle {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ── Progress ── */
+  .progress-bar {
+    width: 100%;
+    max-width: 720px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width .3s ease;
+  }
+  .progress-label {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+  }
+  .known-count { color: var(--accent); font-weight: 600; }
+
+  /* ── Card ── */
+  .card-wrap {
+    width: 100%;
+    max-width: 720px;
+    perspective: 1200px;
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.4,0,.2,1);
+    border-radius: var(--radius);
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--border);
+  }
+  .card-front {
+    background: var(--surface);
+    border-top: 3px solid var(--accent);
+  }
+  .card-back {
+    background: var(--surface2);
+    transform: rotateY(180deg);
+    border-top: 3px solid var(--accent);
+  }
+  .card-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .card-q {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(18px, 3.5vw, 26px);
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .card-hint {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-hint svg { opacity: .5; }
+  .card-a {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .card-a strong { color: var(--accent); }
+  .card-example {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--accent-dim);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .card-example span { color: var(--text); font-style: normal; }
+
+  /* ── Controls ── */
+  .controls {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-prev { background: var(--surface); color: var(--text-dim); }
+  .btn-prev:hover { border-color: var(--accent); color: var(--text); }
+  .btn-known {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .btn-known:hover { opacity: .85; }
+  .btn-known.marked { background: transparent; color: var(--accent); }
+  .btn-next { background: var(--surface); color: var(--text-dim); }
+  .btn-next:hover { border-color: var(--accent); color: var(--text); }
+
+  /* ── Shuffle + Reset ── */
+  .secondary-controls {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .btn-sm {
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-sm:hover { color: var(--text); border-color: var(--accent-dim); }
+
+  /* ── Completion ── */
+  .complete {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    width: 100%;
+    max-width: 720px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+  }
+  .complete.show { display: flex; }
+  .complete-emoji { font-size: 48px; margin-bottom: 16px; }
+  .complete h2 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 8px; }
+  .complete p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+  .btn-restart {
+    padding: 14px 32px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .btn-restart:hover { opacity: .85; }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 40px;
+    font-size: 11px;
+    color: var(--text-dim);
+    opacity: .5;
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    .card-face { padding: 28px 24px; }
+    .btn { padding: 12px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="spec-badge">Edexcel 1PE0 · Component 1 · Paper 1</div>
+  <h1>Injury, PEDs & Warm-up/Cool-down</h1>
+  <p class="subtitle">Tap a card to reveal · Mark cards you know to track progress</p>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-label">
+  <span id="cardCounter">Card 1 of 10</span>
+  <span><span class="known-count" id="knownCount">0</span> known</span>
+</div>
+
+<div class="card-wrap" id="cardWrap" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face card-front" id="cardFront">
+      <div class="card-tag" id="frontTag">TERM</div>
+      <div class="card-q" id="cardQ"></div>
+      <div class="card-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+        Tap to reveal
+      </div>
+    </div>
+    <div class="card-face card-back" id="cardBack">
+      <div class="card-tag" id="backTag">ANSWER</div>
+      <div class="card-a" id="cardA"></div>
+      <div class="card-example" id="cardExample" style="display:none">
+        <span id="cardExampleText"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-prev" onclick="prev()">← Prev</button>
+  <button class="btn btn-known" id="knownBtn" onclick="toggleKnown()">✓ Got it</button>
+  <button class="btn btn-next" onclick="next()">Next →</button>
+</div>
+<div class="secondary-controls">
+  <button class="btn-sm" onclick="shuffle()">⇄ Shuffle</button>
+  <button class="btn-sm" onclick="resetAll()">↺ Reset progress</button>
+  <button class="btn-sm" onclick="filterUnknown()">👁 Unknowns only</button>
+</div>
+
+<div class="complete" id="complete">
+  <div class="complete-emoji">🎉</div>
+  <h2>All cards done!</h2>
+  <p id="completeMsg"></p>
+  <button class="btn-restart" onclick="resetAll()">Start again</button>
+</div>
+
+<footer>GCSE PE · Injury, PEDs & Warm-up/Cool-down · robsmith2704</footer>
+
+<script>
+const ALL_CARDS = [{"id":"ip1","frontTag":"INJURY PREVENTION","backTag":"FIVE METHODS","q":"State five methods of injury prevention.","a":"1. <strong>PARQ</strong> — screens for health risks before training<br>2. Correct <strong>application of training principles</strong> — avoid overuse<br>3. <strong>Adherence to rules</strong> — reduces collisions<br>4. <strong>Protective clothing/equipment</strong> — helmets, shin pads<br>5. <strong>Check equipment/facilities</strong> before use","example":"e.g. A PARQ reveals a heart condition that requires medical clearance before training begins."},{"id":"ip2","frontTag":"INJURY TYPE","backTag":"DESCRIPTION","q":"What is a sprain? How does it differ from a strain?","a":"<strong>Sprain</strong> = overstretching or tearing of a <strong>ligament</strong> at a joint.<br><strong>Strain</strong> = overstretching or tearing of a <strong>muscle or tendon</strong>.","example":"e.g. Ankle sprain from landing awkwardly; hamstring strain from sprinting."},{"id":"ip3","frontTag":"INJURY TYPE","backTag":"DESCRIPTION","q":"What are the differences between a fracture, dislocation and torn cartilage?","a":"<strong>Fracture</strong> — break or crack in bone (stress or acute).<br><strong>Dislocation</strong> — bone forced out of joint socket (common at shoulder).<br><strong>Torn cartilage</strong> — damage to cartilage cushioning a joint (e.g. knee meniscus).","example":"e.g. A rugby tackle can cause a shoulder dislocation."},{"id":"ip4","frontTag":"INJURY TYPE","backTag":"DESCRIPTION","q":"What is concussion and when is it a concern?","a":"Brain trauma caused by impact — symptoms include <strong>confusion, memory loss, dizziness and loss of consciousness</strong>. Must be taken seriously — performer should not continue playing.","example":"e.g. Head-to-head collision in football or rugby."},{"id":"ip5","frontTag":"TREATMENT","backTag":"STEP-BY-STEP","q":"What does RICE stand for and when is it used?","a":"Used for <strong>soft tissue injuries</strong> (sprains, strains, bruising):<br><strong>R</strong>est — stop activity immediately<br><strong>I</strong>ce — reduce swelling and pain<br><strong>C</strong>ompression — limit swelling<br><strong>E</strong>levation — raise limb above heart level","example":"Note: RICE is NOT appropriate for fractures or dislocations — these need immobilisation and medical help."},{"id":"ip6","frontTag":"PEDs","backTag":"EFFECT + RISK","q":"What are anabolic steroids and what are their risks?","a":"<strong>Effect</strong>: increase muscle mass, strength and recovery speed.<br><strong>Risks</strong>: heart problems, liver damage, hormonal disruption, aggression (\"roid rage\").","example":"e.g. Weightlifters and sprinters have used steroids to build muscle faster."},{"id":"ip7","frontTag":"PEDs","backTag":"EFFECT + RISK","q":"What is EPO and what are its risks?","a":"Erythropoietin — a <strong>peptide hormone</strong> that stimulates red blood cell production, increasing O₂-carrying capacity and endurance performance.<br><strong>Risks</strong>: blood thickening → stroke, heart attack, death.","example":"e.g. Used by endurance athletes such as cyclists to improve VO₂ max."},{"id":"ip8","frontTag":"PEDs","backTag":"EFFECT + RISK","q":"What are beta blockers used for in sport?","a":"Reduce <strong>heart rate and anxiety</strong> → steadier hands and calmer performance.<br><strong>Risks</strong>: fatigue, cold extremities, banned in precision sports.","example":"e.g. Used in archery, shooting and snooker to reduce tremor."},{"id":"ip9","frontTag":"WARM-UP","backTag":"THREE PHASES + PURPOSE","q":"What are the three phases of a warm-up and why is each important?","a":"1. <strong>Pulse raiser</strong> — gradually raises HR and blood flow; warms muscles<br>2. <strong>Dynamic stretching</strong> — increases range of movement; prepares muscles for explosive action<br>3. <strong>Sport-specific drills</strong> — rehearses movement patterns; mental preparation","example":"e.g. A sprinter: jog → leg swings → acceleration runs."},{"id":"ip10","frontTag":"COOL-DOWN","backTag":"PHASES + PURPOSE","q":"What are the phases of a cool-down and why are they important?","a":"1. <strong>Light CV exercise</strong> — keeps blood circulating; prevents blood pooling in veins<br>2. <strong>Static stretching</strong> — returns muscles to resting length; reduces DOMS; maintains flexibility","example":"e.g. Gentle jog followed by held stretches for 20–30 seconds each."}];
+let cards = [...ALL_CARDS];
+let idx = 0;
+let flipped = false;
+let known = new Set();
+let unknownOnly = false;
+
+function render() {
+  if (idx >= cards.length) { showComplete(); return; }
+  const c = cards[idx];
+  document.getElementById('cardQ').innerHTML = c.q;
+  document.getElementById('cardA').innerHTML = c.a;
+  document.getElementById('frontTag').textContent = c.frontTag || 'TERM';
+  document.getElementById('backTag').textContent = c.backTag || 'ANSWER';
+  const ex = document.getElementById('cardExample');
+  const exTxt = document.getElementById('cardExampleText');
+  if (c.example) { exTxt.innerHTML = c.example; ex.style.display = 'block'; }
+  else { ex.style.display = 'none'; }
+  // Reset flip
+  const inner = document.getElementById('cardInner');
+  inner.classList.remove('flipped');
+  flipped = false;
+  // Known button
+  const btn = document.getElementById('knownBtn');
+  btn.textContent = known.has(cards[idx].id) ? '✓ Known!' : '✓ Got it';
+  btn.classList.toggle('marked', known.has(cards[idx].id));
+  // Progress
+  document.getElementById('cardCounter').textContent = `Card ${idx+1} of ${cards.length}`;
+  document.getElementById('knownCount').textContent = known.size;
+  document.getElementById('progressFill').style.width = `${(known.size / ALL_CARDS.length) * 100}%`;
+  document.getElementById('complete').classList.remove('show');
+  document.getElementById('cardWrap').style.display = '';
+  document.querySelector('.controls').style.display = '';
+  document.querySelector('.secondary-controls').style.display = '';
+}
+
+function flipCard() {
+  document.getElementById('cardInner').classList.toggle('flipped');
+  flipped = !flipped;
+}
+function next() { idx = (idx + 1) % cards.length; render(); }
+function prev() { idx = (idx - 1 + cards.length) % cards.length; render(); }
+function toggleKnown() {
+  const c = cards[idx];
+  if (known.has(c.id)) known.delete(c.id); else known.add(c.id);
+  render();
+}
+function shuffle() {
+  cards = cards.sort(() => Math.random() - .5);
+  idx = 0; render();
+}
+function filterUnknown() {
+  unknownOnly = !unknownOnly;
+  cards = unknownOnly ? ALL_CARDS.filter(c => !known.has(c.id)) : [...ALL_CARDS];
+  if (cards.length === 0) { alert('No unknown cards — all marked as known!'); cards = [...ALL_CARDS]; unknownOnly = false; }
+  idx = 0; render();
+}
+function resetAll() {
+  known = new Set(); cards = [...ALL_CARDS]; idx = 0; unknownOnly = false; render();
+}
+function showComplete() {
+  document.getElementById('cardWrap').style.display = 'none';
+  document.querySelector('.controls').style.display = 'none';
+  document.querySelector('.secondary-controls').style.display = 'none';
+  const known_count = known.size;
+  document.getElementById('completeMsg').textContent =
+    `You marked ${known_count} of ${ALL_CARDS.length} cards as known. ${known_count === ALL_CARDS.length ? 'Perfect score!' : 'Keep going — you\'re getting there!'}`;
+  document.getElementById('complete').classList.add('show');
+}
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'l') next();
+  else if (e.key === 'ArrowLeft' || e.key === 'h') prev();
+  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  else if (e.key === 'k') toggleKnown();
+});
+render();
+</script>
+</body>
+</html>
