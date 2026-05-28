@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sport Psychology — GCSE PE Flash Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #7C3AED; --accent-dim: #7C3AED33; --bg: #0f1117; --surface: #1a1d27; --surface2: #222636; --border: #2e3347; --text: #e8eaf0; --text-dim: #7b82a0; --radius: 16px; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px 48px; }
+  header { width: 100%; max-width: 720px; margin-bottom: 32px; }
+  .spec-badge { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; margin-bottom: 10px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(22px, 5vw, 32px); line-height: 1.2; }
+  .subtitle { margin-top: 6px; font-size: 13px; color: var(--text-dim); }
+  .progress-bar { width: 100%; max-width: 720px; height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s ease; }
+  .progress-label { width: 100%; max-width: 720px; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-bottom: 28px; }
+  .known-count { color: var(--accent); font-weight: 600; }
+  .card-wrap { width: 100%; max-width: 720px; perspective: 1200px; cursor: pointer; margin-bottom: 24px; }
+  .card-inner { position: relative; width: 100%; min-height: 280px; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); border-radius: var(--radius); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); padding: 40px; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--border); }
+  .card-front { background: var(--surface); border-top: 3px solid var(--accent); }
+  .card-back { background: var(--surface2); transform: rotateY(180deg); border-top: 3px solid var(--accent); }
+  .card-tag { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .card-q { font-family: 'DM Serif Display', serif; font-size: clamp(18px, 3.5vw, 26px); line-height: 1.35; }
+  .card-hint { margin-top: 20px; font-size: 12px; color: var(--text-dim); }
+  .card-a { font-size: clamp(14px, 2.5vw, 17px); line-height: 1.65; }
+  .card-a strong { color: var(--accent); }
+  .card-example { margin-top: 16px; padding: 12px 16px; background: var(--accent-dim); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13px; color: var(--text-dim); font-style: italic; }
+  .card-example span { color: var(--text); font-style: normal; }
+  .controls { width: 100%; max-width: 720px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { flex: 1; min-width: 120px; padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-prev { background: var(--surface); color: var(--text-dim); } .btn-prev:hover { border-color: var(--accent); color: var(--text); }
+  .btn-known { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; } .btn-known:hover { opacity: .85; } .btn-known.marked { background: transparent; color: var(--accent); }
+  .btn-next { background: var(--surface); color: var(--text-dim); } .btn-next:hover { border-color: var(--accent); color: var(--text); }
+  .secondary-controls { width: 100%; max-width: 720px; display: flex; gap: 10px; margin-top: 12px; }
+  .btn-sm { padding: 9px 16px; border-radius: 10px; border: 1px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-dim); cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px; } .btn-sm:hover { color: var(--text); border-color: var(--accent-dim); }
+  .complete { display: none; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; width: 100%; max-width: 720px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); border-top: 3px solid var(--accent); }
+  .complete.show { display: flex; }
+  .complete-emoji { font-size: 48px; margin-bottom: 16px; }
+  .complete h2 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 8px; }
+  .complete p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+  .btn-restart { padding: 14px 32px; border-radius: 12px; background: var(--accent); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; border: none; cursor: pointer; } .btn-restart:hover { opacity: .85; }
+  footer { margin-top: 40px; font-size: 11px; color: var(--text-dim); opacity: .5; text-align: center; }
+  @media (max-width: 480px) { .card-face { padding: 28px 24px; } .btn { padding: 12px 14px; font-size: 13px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="spec-badge">Edexcel 1PE0 · Component 2 · Paper 2</div>
+  <h1>Sport Psychology</h1>
+  <p class="subtitle">Tap a card to reveal · Mark cards you know to track progress</p>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-label"><span id="cardCounter">Card 1 of 10</span><span><span class="known-count" id="knownCount">0</span> known</span></div>
+<div class="card-wrap" id="cardWrap" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face card-front"><div class="card-tag" id="frontTag">TERM</div><div class="card-q" id="cardQ"></div><div class="card-hint">Tap to reveal</div></div>
+    <div class="card-face card-back"><div class="card-tag" id="backTag">ANSWER</div><div class="card-a" id="cardA"></div><div class="card-example" id="cardExample" style="display:none"><span id="cardExampleText"></span></div></div>
+  </div>
+</div>
+<div class="controls">
+  <button class="btn btn-prev" onclick="prev()">← Prev</button>
+  <button class="btn btn-known" id="knownBtn" onclick="toggleKnown()">✓ Got it</button>
+  <button class="btn btn-next" onclick="next()">Next →</button>
+</div>
+<div class="secondary-controls">
+  <button class="btn-sm" onclick="shuffle()">⇄ Shuffle</button>
+  <button class="btn-sm" onclick="resetAll()">↺ Reset progress</button>
+  <button class="btn-sm" onclick="filterUnknown()">👁 Unknowns only</button>
+</div>
+<div class="complete" id="complete">
+  <div class="complete-emoji">🎉</div><h2>All cards done!</h2>
+  <p id="completeMsg"></p>
+  <button class="btn-restart" onclick="resetAll()">Start again</button>
+</div>
+<footer>GCSE PE · Sport Psychology · robsmith2704</footer>
+<script>
+const ALL_CARDS=[{"id":"sp1","frontTag":"SKILL CLASSIFICATION","backTag":"DEFINITIONS + EXAMPLES","q":"What is the difference between an open and a closed skill?","a":"<strong>Open skill</strong>: performed in an unpredictable, changing environment — performer must react and adapt.<br><strong>Closed skill</strong>: performed in a predictable environment — same way each time.","example":"Open: a hockey pass in a game (defenders moving). Closed: gymnastics vault (consistent apparatus, no opponents)."},{"id":"sp2","frontTag":"SKILL CLASSIFICATION","backTag":"DEFINITIONS + EXAMPLES","q":"What is the difference between a basic and complex skill?","a":"<strong>Basic (simple) skill</strong>: requires few decisions, little concentration — can be performed almost automatically.<br><strong>Complex skill</strong>: requires many decisions, high concentration — cognitively demanding.","example":"Basic: sprinting in a straight line. Complex: basketball lay-up (timing, angle, defenders, footwork)."},{"id":"sp3","frontTag":"SKILL CLASSIFICATION","backTag":"DEFINITIONS + EXAMPLES","q":"What is the difference between high and low organisation skills?","a":"<strong>Low organisation</strong>: can be broken into separate parts and each part practised individually.<br><strong>High organisation</strong>: parts are closely linked and must be practised as a whole.","example":"Low: front crawl (legs, arms, breathing can be practised separately). High: cartwheel or golf swing."},{"id":"sp4","frontTag":"PRACTICE STRUCTURE","backTag":"DEFINITION + BEST USED FOR","q":"When should massed practice be used?","a":"<strong>Massed practice</strong> = continuous practice with no rest between trials.<br>Best for: simple, well-learned skills; high fitness performers; skills that require groove/consistency.","example":"e.g. A professional tennis player practising serves repeatedly without rest to build automatic technique."},{"id":"sp5","frontTag":"PRACTICE STRUCTURE","backTag":"DEFINITION + BEST USED FOR","q":"When should distributed practice be used?","a":"<strong>Distributed practice</strong> = practice with rest or mental rehearsal between trials.<br>Best for: complex or dangerous skills; beginners; fatiguing tasks; when errors need to be corrected.","example":"e.g. Learning a trampoline routine — rest allows reflection on errors and reduces injury risk."},{"id":"sp6","frontTag":"PRACTICE STRUCTURE","backTag":"DEFINITION + BEST USED FOR","q":"What is the difference between fixed and variable practice?","a":"<strong>Fixed</strong>: same skill repeated the same way — develops consistency; best for closed skills.<br><strong>Variable</strong>: skill practised in different situations — develops adaptability; best for open skills.","example":"Fixed: a gymnast repeatedly practising the same vault. Variable: a footballer practising passing from different angles."},{"id":"sp7","frontTag":"SMART TARGETS","backTag":"ALL FIVE LETTERS","q":"What does SMART stand for and why does each element matter?","a":"<strong>S</strong>pecific — clearly defined goal<br><strong>M</strong>easurable — progress can be tracked<br><strong>A</strong>chievable — realistic given current ability<br><strong>R</strong>ealistic — relevant to performer's needs<br><strong>T</strong>ime-bound — clear deadline for achievement","example":"e.g. \"Run 5km in under 25 minutes within 8 weeks\" — meets all five SMART criteria."},{"id":"sp8","frontTag":"GUIDANCE","backTag":"FOUR TYPES + WHEN TO USE","q":"What are the four types of guidance and when is each most appropriate?","a":"<strong>Visual</strong>: demonstrations/video — learning a new skill; cognitive stage.<br><strong>Verbal</strong>: coach instructions — reinforcing key points.<br><strong>Manual</strong>: physically moving performer — early stages; dangerous skills.<br><strong>Mechanical</strong>: device/harness — building confidence; high-risk skills.","example":"e.g. Manual guidance used in trampolining when learning a new somersault."},{"id":"sp9","frontTag":"FEEDBACK","backTag":"FOUR TYPES + DEFINITIONS","q":"Distinguish between intrinsic, extrinsic, concurrent and terminal feedback.","a":"<strong>Intrinsic</strong>: from within — feel of movement (experienced performers).<br><strong>Extrinsic</strong>: from outside — coach or video (beginners).<br><strong>Concurrent</strong>: during performance — simple skills.<br><strong>Terminal</strong>: after performance — complex skills.","example":"e.g. A beginner gymnast needs extrinsic terminal feedback — they cannot yet feel errors and need post-performance guidance."},{"id":"sp10","frontTag":"MENTAL PREPARATION","backTag":"DEFINITION + EFFECT","q":"What is mental rehearsal and why is it effective?","a":"<strong>Mental rehearsal</strong> (visualisation) = mentally practising a skill or performance in detail, imagining successful execution. Effective because it activates the <strong>same neural pathways</strong> as physical practice — reinforces movement patterns without physical fatigue.","example":"e.g. A penalty taker visualising a perfect kick before taking it — builds confidence and reduces anxiety."}];let cards=[...ALL_CARDS],idx=0,flipped=false,known=new Set(),unknownOnly=false;
+function render(){if(idx>=cards.length){showComplete();return;}const c=cards[idx];document.getElementById('cardQ').innerHTML=c.q;document.getElementById('cardA').innerHTML=c.a;document.getElementById('frontTag').textContent=c.frontTag||'TERM';document.getElementById('backTag').textContent=c.backTag||'ANSWER';const ex=document.getElementById('cardExample'),exTxt=document.getElementById('cardExampleText');if(c.example){exTxt.innerHTML=c.example;ex.style.display='block';}else{ex.style.display='none';}document.getElementById('cardInner').classList.remove('flipped');flipped=false;const btn=document.getElementById('knownBtn');btn.textContent=known.has(cards[idx].id)?'✓ Known!':'✓ Got it';btn.classList.toggle('marked',known.has(cards[idx].id));document.getElementById('cardCounter').textContent=`Card ${idx+1} of ${cards.length}`;document.getElementById('knownCount').textContent=known.size;document.getElementById('progressFill').style.width=`${(known.size/ALL_CARDS.length)*100}%`;document.getElementById('complete').classList.remove('show');document.getElementById('cardWrap').style.display='';document.querySelector('.controls').style.display='';document.querySelector('.secondary-controls').style.display='';}
+function flipCard(){document.getElementById('cardInner').classList.toggle('flipped');flipped=!flipped;}
+function next(){idx=(idx+1)%cards.length;render();}function prev(){idx=(idx-1+cards.length)%cards.length;render();}
+function toggleKnown(){const c=cards[idx];if(known.has(c.id))known.delete(c.id);else known.add(c.id);render();}
+function shuffle(){cards=cards.sort(()=>Math.random()-.5);idx=0;render();}
+function filterUnknown(){unknownOnly=!unknownOnly;cards=unknownOnly?ALL_CARDS.filter(c=>!known.has(c.id)):[...ALL_CARDS];if(cards.length===0){alert('No unknown cards!');cards=[...ALL_CARDS];unknownOnly=false;}idx=0;render();}
+function resetAll(){known=new Set();cards=[...ALL_CARDS];idx=0;unknownOnly=false;render();}
+function showComplete(){document.getElementById('cardWrap').style.display='none';document.querySelector('.controls').style.display='none';document.querySelector('.secondary-controls').style.display='none';document.getElementById('completeMsg').textContent=`You marked ${known.size} of ${ALL_CARDS.length} cards as known. ${known.size===ALL_CARDS.length?'Perfect score!':'Keep going!'}`;document.getElementById('complete').classList.add('show');}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='l')next();else if(e.key==='ArrowLeft'||e.key==='h')prev();else if(e.key===' '||e.key==='Enter'){e.preventDefault();flipCard();}else if(e.key==='k')toggleKnown();});
+render();
+</script>
+</body></html>
